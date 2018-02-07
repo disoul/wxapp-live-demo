@@ -17,11 +17,44 @@ Page({
     pushModeText: '高清',
     active: true,
     magic: true,
+    authPass: false,
     pushState: 'stop', // stop pushing pause pending
   },
 
-  onLoad: function (option) {
-    this.liveTitle = option.title;
+  onLoad(options) {
+    this.options = options;
+    if (app.globalData.authPass) {
+      this.setData({ authPass: true }, this.onAuthPass);
+    }
+  },
+
+  onAuthUpdate(e) {
+    this.passcode = e.detail.value;
+  },
+
+  onAuthEnter() {
+    wx.request({
+      url: `${host}/pili/api/auth/${this.passcode}`,
+      dataType: 'json',
+      header: {
+        Authorization: wx.getStorageSync('authToken'),
+      },
+      success: (data) => {
+        if (data.data.status === 'ok') {
+          this.setData({ authPass: true }, this.onAuthPass.bind(this));
+          app.globalData.authPass = true;
+        } else {
+          wx.showToast({ title: data.data.msg, icon: 'none' });
+        }
+      },
+      fail: () => {
+        wx.showToast({ title: '密码验证失败！', icon: 'none' });
+      },
+    });
+  },
+
+  onAuthPass() {
+    this.liveTitle = this.options.title;
     wx.showShareMenu({
       withShareTicket: true,
     });

@@ -71,3 +71,41 @@
   top: 0;
   left: 0;
 }
+
+.auth-model {
+  margin-top: 30rpx;
+  padding: 0 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-title {
+  font-size: 32rpx;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 6rpx;
+}
+
+.auth-desc {
+  font-size: 20rpx;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 200rpx;
+  color: rgba(0, 0, 0, .6);
+}
+
+.auth-input {
+  width: 500rpx;
+  margin: auto;
+  font-size: 60px;
+  letter-spacing: 6rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, .4);
+  margin-bottom: 100rpx;
+}
+
+.auth-btn {
+  width: 300rpx;
+}

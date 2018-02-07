@@ -4,6 +4,7 @@
     bindstatechange="statechange"
     beauty="{{magic ? '6' : 1}}"
     whiteness="{{magic ? '6' : 1}}"
+    wx:if="{{authPass}}"
   >
     <cover-view class="wrapper" bindtap="onViewTap">
       <cover-view class="publish-control">
@@ -16,4 +17,11 @@
       </cover-view>
     </cover-view>
   </live-pusher>
+  <view class="auth-model" wx:if="{{!authPass}}">
+    <text class="auth-title">请输入推流动态密码</text>
+    <text class="auth-desc">请联系七牛商务获取</text>
+    <input maxlength="6" type="number" bindinput="onAuthUpdate" class="auth-input" />
+
+    <button class="auth-btn" bindtap="onAuthEnter">确认</button>
+  </view>
 </view>

@@ -5,11 +5,14 @@
  * Distributed under terms of the MIT license.
  */
 const express = require('express');
+const tfa = require('2fa');
 const router = express.Router();
 
 const auth = require('../auth');
 const PILI = require('../pili.js');
 const { getStreamKey } = require('../utils/pili');
+
+const TFA_KEY = 'roadyn0oho6swuxf5gspvo21oyg1fqzp';
 
 router.use('/api', auth);
 /**
@@ -35,6 +38,21 @@ router.get('/api/rtmp/:type', (req, res) => {
 
   res.json({url: rtmpURL});
 });
+
+router.get('/api/auth/:code', async (req, res) => {
+  const opt = {
+    drift: 20,
+    step: 30,
+  };
+  const passcode = req.params.code;
+  const counter = Math.floor(Date.now() / 1000 / opt.step);
+  const validHOTP = tfa.verifyHOTP(TFA_KEY, passcode, counter, opt);
+  if (validHOTP) {
+    res.json({ status: 'ok' });
+  } else {
+    res.json({ status: 'error', msg: '密码不正确，请确认是否过期' });
+  }
+})
 
 /**
  * 直播鉴黄的回调请求
